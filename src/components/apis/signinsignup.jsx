@@ -9,10 +9,11 @@ export const signUp = async (email, password) => {
             "Content-type": "application/json; charset=UTF-8"
         }
     })
-    .then((response) => response.json())
-    .then((json) => {
-        console.log(json.token);
-        return json.token;
+    .then((response) => { 
+        if(response.status === 200 && response.token)
+            return response.json()
+        
+        return false
     })
 };
 
@@ -27,9 +28,10 @@ export const login = async (email, password) => {
             "Content-type": "application/json; charset=UTF-8"
         }
     })
-    .then((response) => response.json())
-    .then((json) => {
-        console.log(json.token);
-        return json.token;
+    .then((response) => { 
+        if(response.status === 200 && response.token)
+            return response.json()
+        
+        return false
     })
 };

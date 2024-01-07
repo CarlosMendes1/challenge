@@ -1,0 +1,16 @@
+.dashboard{
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-header{
+    color: black;
+    font-size: 100;
+    font-weight: 500;
+    align-self: center;
+}
+
+.users-table{
+    align-self: center;
+    margin-top: 100px;
+}
