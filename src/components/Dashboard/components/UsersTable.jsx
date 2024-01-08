@@ -2,38 +2,35 @@ import React, { useEffect, useState } from 'react';
 import { getUsers } from '../../apis/users';
 
 const UsersTable = () => {
-  const pageSize = 4; 
+  const startingPage = 1;
+  const baseUrl = "https://reqres.in/api/users"
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
-  const [startIndex, setStartIndex] = useState();
-  const [endIndex, setEndIndex] = useState();
   const [currentData, setCurrentData] = useState();
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const handlePageChange = async(pageNumber) => {
+    await fetchUsers(pageNumber);
   };
 
-  useEffect(() => {
-    const fetchUsers = async() => {
-        const response = await getUsers(1);
+  const fetchUsers = async(page) => {
+    const url = page ? baseUrl + '?page=' + page : baseUrl + '?page=1';
 
-        console.log(response.data);
+    const response = await fetch(url);
+    const usersData = await response.json();
 
-        if(response)
-        {
-            const totalPages = Math.ceil(response.data.length / pageSize);
-            const startIndex = (currentPage - 1) * pageSize;
-            const endIndex = startIndex + pageSize;
-            const currentData = response.data && response.data?.slice(startIndex, endIndex);
+    if(usersData)
+    {
+        const totalPages = usersData.total_pages;
+        const currentData = usersData.data && usersData.data?.slice(0, usersData.per_page);
 
-            setTotalPages(totalPages);
-            setStartIndex(startIndex);
-            setEndIndex(endIndex);
-            setCurrentData(currentData);
-        }
+        setTotalPages(totalPages);
+        setCurrentData(currentData);
+        setCurrentPage(page);
     }
+}
 
-    fetchUsers()
+  useEffect(() => {
+    fetchUsers(startingPage)
   },[])
 
   return (

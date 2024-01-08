@@ -4,17 +4,14 @@ export const getUsers = async (page) => {
     const url = page ? baseUrl + '?page=' + page : baseUrl;
 
     fetch(url, {
-        method: "GET",
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
+        method: "GET"
     })
-    .then((response) => { 
+    .then(async(response) => { 
         if(response.status === 200){
-            console.log(response);
-            return response.json();
+            const usersResponse = await response.json();
+            
+            return usersResponse;
         }
-        
         
         return false;
     })
